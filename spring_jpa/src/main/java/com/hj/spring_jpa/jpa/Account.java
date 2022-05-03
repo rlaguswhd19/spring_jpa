@@ -4,8 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -28,9 +26,14 @@ public class Account {
 
     @Column(nullable = false)
     private LocalDate created = LocalDate.now();
-
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date created = new Date();
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "home_street"))
+    })
+    private Address address;
 
     @Transient
     private String no;
