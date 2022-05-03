@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -11,7 +13,6 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class Account {
 
     @Id
@@ -29,12 +30,19 @@ public class Account {
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date created = new Date();
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "street", column = @Column(name = "home_street"))
-    })
-    private Address address;
+    @OneToMany(mappedBy = "owner")
+    private Set<Study> studies = new HashSet<>();
 
     @Transient
     private String no;
+
+    public void addStudy(Study study) {
+        this.getStudies().add(study);
+        study.setOwner(this);
+    }
+
+    public void remoteStudy(Study study) {
+        this.getStudies().remove(study);
+        study.setOwner(null);
+    }
 }

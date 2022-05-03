@@ -18,13 +18,22 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Account account = new Account();
-        account.setPassword("123");
-        account.setUsername("erwin");
+        Session session = entityManager.unwrap(Session.class); // hibernate 객체
+
+        Account account1 = new Account();
+        account1.setUsername("현종");
+        account1.setPassword("1");
+
+        Study study1 = Study.builder()
+                .name("현종 Class")
+                .build();
+
+        account1.addStudy(study1);
+
 
 //        entityManager.persist(account); // db에 저장 = 영속화
-
-        Session session = entityManager.unwrap(Session.class); // hibernate 객체
-        session.save(account);
+        session.save(account1);
+        session.save(study1);
+        account1.remoteStudy(study1);
     }
 }
