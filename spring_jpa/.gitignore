@@ -36,32 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
-
-@rlaguswhd19
-rlaguswhd19
-
-spring_jpa
-Public
-Code
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-spring_jpa/.gitignore
-rlaguswhd19 Fix : git ignore Gradle
-Latest commit b63dfe6 3 days ago
- History
- 1 contributor
-167 lines (125 sloc)  3.42 KB
-
 # Compiled class file
 *.class
 
