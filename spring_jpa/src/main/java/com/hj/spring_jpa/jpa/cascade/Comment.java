@@ -1,4 +1,4 @@
-package com.hj.spring_jpa.jpa;
+package com.hj.spring_jpa.jpa.cascade;
 
 import lombok.*;
 
@@ -8,20 +8,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Study {
+public class Comment {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long Id;
 
-    private String name;
+    private String comment;
 
     @ManyToOne
-    private Account owner;
+    private Post post;
 
 }

@@ -1,4 +1,4 @@
-package com.hj.spring_jpa.jpa;
+package com.hj.spring_jpa.jpa.entity;
 
 import javax.persistence.Embeddable;
 

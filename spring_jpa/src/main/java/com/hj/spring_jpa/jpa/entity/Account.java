@@ -1,4 +1,4 @@
-package com.hj.spring_jpa.jpa;
+package com.hj.spring_jpa.jpa.entity;
 
 import lombok.*;
 
@@ -13,6 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Account {
 
     @Id
@@ -41,7 +42,7 @@ public class Account {
         study.setOwner(this);
     }
 
-    public void remoteStudy(Study study) {
+    public void removeStudy(Study study) {
         this.getStudies().remove(study);
         study.setOwner(null);
     }
