@@ -12,7 +12,6 @@ import java.util.Set;
 @Builder
 @Setter
 @Getter
-@ToString
 public class Post {
 
     @Id
@@ -30,4 +29,10 @@ public class Post {
         comment.setPost(this);
     }
 
+    @Override
+    public String toString() {
+        return "Post{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }

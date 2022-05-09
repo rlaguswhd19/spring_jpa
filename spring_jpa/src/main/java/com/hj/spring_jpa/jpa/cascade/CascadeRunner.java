@@ -2,14 +2,12 @@ package com.hj.spring_jpa.jpa.cascade;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Set;
 
-@Component
+//@Component
 @Transactional // 하나의 트랜잭션으로 실행 = method에 붙일수도 있고 class에 붙여서 모두 적용할 수 있음
 public class CascadeRunner implements ApplicationRunner {
 
@@ -31,7 +29,7 @@ public class CascadeRunner implements ApplicationRunner {
 //
 //        post.addComment(comment1);
 
-        Post load = entityManager.getReference(Post.class, 1l);
+        Post load = entityManager.find(Post.class, 1l);
 //        entityManager.persist(post);
 
         System.out.println(load.getTitle());
@@ -41,7 +39,7 @@ public class CascadeRunner implements ApplicationRunner {
         });
 //        ManyToOne fetch eager 쿼리를 날릴때 join으로 가져오기 '지금'
 //        OneToMany fetch lazy 쿼리를 날릴때 join으로 가져오지 않고 foreignkey로 가져와서 '나중에' 필요할때 조회
-//        Comment loadComment = entityManager.getReference(Comment.class, 2l);
+//        Comment loadComment = entityManager.find(Comment.class, 2l);
 //        System.out.println(loadComment.getPost().getTitle());
 
 //        entityManager.remove(load);
