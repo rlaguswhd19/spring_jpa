@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class JpaRunner implements ApplicationRunner {
 
-    @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
+
+    public JpaRunner(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
