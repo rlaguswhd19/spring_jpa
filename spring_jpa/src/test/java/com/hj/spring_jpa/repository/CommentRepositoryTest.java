@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,7 +41,7 @@ public class CommentRepositoryTest {
         long count = commentRepository.count();
         assertThat(count).isEqualTo(1);
 
-        Optional<Comment> byId = commentRepository.findById(100l);
+        Optional<Comment> byId = commentRepository.findById(100L);
         assertThat(byId).isEmpty();
 //        byId.orElseThrow(IllegalArgumentException::new);
 
@@ -70,10 +72,29 @@ public class CommentRepositoryTest {
 //                comment.getComment().startsWith("test")
 //        ).collect(Collectors.toList());
 
-        Comment firstComment = stream.findFirst().get();
+        Comment firstComment = stream.findFirst().orElseThrow(NoSuchElementException::new);
         assertThat(firstComment.getLikeCount()).isEqualTo(100);
 
 //        assertThat(stream.collect(Collectors.toList()).size()).isEqualTo(3);
+    }
+
+    @Test
+    public void future() {
+
+        ListenableFuture<List<Comment>> listenableFuture = commentRepository.findByCommentContains("test", PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount")));
+        listenableFuture.addCallback(new ListenableFutureCallback<>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                System.out.println(ex.getMessage());
+            }
+
+            @Override
+            public void onSuccess(List<Comment> result) {
+                System.out.println("==================");
+                result.forEach(System.out::println);
+            }
+        });
+
     }
 
     public void createComment(int likeCount, String comment) {
