@@ -6,8 +6,15 @@ import org.assertj.core.internal.bytebuddy.implementation.bytecode.Throw;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,5 +45,41 @@ public class CommentRepositoryTest {
 
 //        commentRepository.save(null);
 
+    }
+
+    @Test
+    public void test() {
+        createComment(10, "Spring Jpa test");
+        createComment(100, "Hibernate Test");
+        createComment(11, "spring testTest");
+
+        List<Comment> comments = commentRepository.findByCommentContainsIgnoreCaseAndLikeCountGreaterThanOrderByLikeCountDesc("test", 10);
+
+//        comments.forEach(System.out::println);
+
+        assertThat(comments.size()).isEqualTo(2);
+        assertThat(comments).first().hasFieldOrPropertyWithValue("likeCount", 100);
+
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+        Page<Comment> pages = commentRepository.findByCommentContainsIgnoreCase("spring", pageRequest);
+        assertThat(pages.getNumberOfElements()).isEqualTo(2);
+        assertThat(pages).first().hasFieldOrPropertyWithValue("likeCount", 11);
+
+        Stream<Comment> stream = commentRepository.findByCreatedAfter(LocalDate.now().minusDays(1), PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount")));
+//        List<Comment> testComment = stream.filter(comment ->
+//                comment.getComment().startsWith("test")
+//        ).collect(Collectors.toList());
+
+        Comment firstComment = stream.findFirst().get();
+        assertThat(firstComment.getLikeCount()).isEqualTo(100);
+
+//        assertThat(stream.collect(Collectors.toList()).size()).isEqualTo(3);
+    }
+
+    public void createComment(int likeCount, String comment) {
+        Comment newComment = new Comment();
+        newComment.setComment(comment);
+        newComment.setLikeCount(likeCount);
+        commentRepository.save(newComment);
     }
 }
