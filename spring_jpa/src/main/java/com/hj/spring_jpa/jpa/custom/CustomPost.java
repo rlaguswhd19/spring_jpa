@@ -1,6 +1,7 @@
 package com.hj.spring_jpa.jpa.custom;
 
 import lombok.*;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomPost {
+public class CustomPost extends AbstractAggregateRoot<CustomPost> {
 
     @Id @GeneratedValue
     private Long id;
@@ -25,4 +26,11 @@ public class CustomPost {
     private String content;
 
     private LocalDate created = LocalDate.now();
+
+    public CustomPost publish() {
+        this.registerEvent(new CustomPostPublishedEvent(this));
+        return this;
+    }
+
+
 }
