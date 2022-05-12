@@ -1,7 +1,8 @@
 package com.hj.spring_jpa.jpa.custom;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.hj.spring_jpa.jpa.basic.BasicRepository;
+import com.hj.spring_jpa.jpa.basic.SimpleMyRepository;
 
-public interface CustomPostRepository extends JpaRepository<CustomPost, Long>, MyRepository<CustomPost> {
+public interface CustomPostRepository extends BasicRepository<CustomPost, Long> {
 
 }

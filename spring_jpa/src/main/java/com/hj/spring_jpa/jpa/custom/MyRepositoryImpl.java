@@ -9,11 +9,11 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class MyRepositoryErwin implements MyRepository<CustomPost>{
+public class MyRepositoryImpl implements MyRepository<CustomPost>{
 
     final EntityManager entityManager;
 
-    public MyRepositoryErwin(EntityManager entityManager) {
+    public MyRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

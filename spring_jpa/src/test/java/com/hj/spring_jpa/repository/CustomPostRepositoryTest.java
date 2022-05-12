@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
-
+import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 public class CustomPostRepositoryTest {
 
@@ -16,14 +16,15 @@ public class CustomPostRepositoryTest {
     CustomPostRepository customPostRepository;
 
     @Test
-    @Rollback
     public void crud() {
-        List<CustomPost> myPost = customPostRepository.findMyPost();
         CustomPost customPost = new CustomPost();
         customPost.setTitle("Test");
+
+        assertThat(customPostRepository.contains(customPost)).isFalse();
+
         customPostRepository.save(customPost);
 
-        customPostRepository.findMyPost();
+        assertThat(customPostRepository.contains(customPost)).isTrue();
 
         customPostRepository.delete(customPost);
         customPostRepository.flush();
