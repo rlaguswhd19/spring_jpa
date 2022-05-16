@@ -3,6 +3,9 @@ package com.hj.spring_jpa.repository;
 import com.hj.spring_jpa.jpa.custom.CustomPost;
 import com.hj.spring_jpa.jpa.custom.CustomPostPublishedEvent;
 import com.hj.spring_jpa.jpa.custom.CustomPostRepository;
+import com.hj.spring_jpa.jpa.custom.QCustomPost;
+import com.querydsl.core.types.Predicate;
+import org.assertj.core.api.PredicateAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,6 +14,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -47,4 +52,19 @@ public class CustomPostRepositoryTest {
 
         applicationContext.publishEvent(customPostPublishedEvent);
     }
+
+    @Test
+    public void QueryDsl() {
+        CustomPost customPost = new CustomPost();
+        customPost.setTitle("hibernate");
+
+        customPostRepository.save(customPost);
+
+        Predicate predicate = QCustomPost.customPost.title.containsIgnoreCase("hibernate");
+        Optional<CustomPost> one = customPostRepository.findOne(predicate);
+        System.out.println(one.get().getTitle());
+        assertThat(one).isNotEmpty();
+
+    }
+
 }

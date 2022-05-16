@@ -1,6 +1,7 @@
 package com.hj.spring_jpa.jpa.basic;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.io.Serializable;
