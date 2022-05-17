@@ -5,6 +5,7 @@ import com.hj.spring_jpa.jpa.custom.CustomPostPublishedEvent;
 import com.hj.spring_jpa.jpa.custom.CustomPostRepository;
 import com.hj.spring_jpa.jpa.custom.QCustomPost;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.assertj.core.api.PredicateAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class CustomPostRepositoryTest {
         customPostRepository.save(customPost);
 
         Predicate predicate = QCustomPost.customPost.title.containsIgnoreCase("hibernate");
+
         Optional<CustomPost> one = customPostRepository.findOne(predicate);
         System.out.println(one.get().getTitle());
         assertThat(one).isNotEmpty();

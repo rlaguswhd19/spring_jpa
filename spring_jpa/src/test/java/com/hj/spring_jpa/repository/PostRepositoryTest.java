@@ -1,12 +1,16 @@
 package com.hj.spring_jpa.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Post;
+import com.hj.spring_jpa.jpa.cascade.QPost;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
+import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
@@ -56,5 +60,19 @@ public class PostRepositoryTest {
 
         Long count = postRepository.countByTitleContains("test");
         assertThat(count).isEqualTo(1);
+    }
+
+    @Test
+    public void predicate() {
+        Post post = Post.builder()
+                .title("erwin")
+                .build();
+        postRepository.save(post);
+
+        Predicate predicate = QPost.post.title.containsIgnoreCase("erwin");
+        Page<Post> pages = postRepository.findAll(predicate, PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id")));
+
+        pages.stream().forEach(System.out::println);
+
     }
 }
