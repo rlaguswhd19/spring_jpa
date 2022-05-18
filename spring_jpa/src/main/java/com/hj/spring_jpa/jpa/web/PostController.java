@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class PostController {
 
@@ -22,12 +24,12 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public Long getPost(@PathVariable("id") Post post) {
-        return post.getId();
+    public String getPost(@PathVariable("id") Post post) {
+        return post.getTitle();
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<PagedModel<EntityModel<Post>>> getPost(Pageable pageable, PagedResourcesAssembler pagedResourcesAssembler) {
+    public ResponseEntity<PagedModel<EntityModel<Post>>> getPost(Pageable pageable, PagedResourcesAssembler<Post> pagedResourcesAssembler) {
         Page<Post> page = postRepository.findAll(pageable);
         return ResponseEntity.ok(pagedResourcesAssembler.toModel(page));
     }
@@ -40,4 +42,5 @@ public class PostController {
         Post newPost = postRepository.save(post);
         return EntityModel.of(newPost);
     }
+
 }

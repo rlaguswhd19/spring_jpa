@@ -1,8 +1,10 @@
 package com.hj.spring_jpa.jpa.cascade;
 
 import lombok.*;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,9 @@ public class Post {
     private Long id;
 
     private String title;
+
+    @Builder.Default
+    private LocalDate created = LocalDate.now();
 
 //    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

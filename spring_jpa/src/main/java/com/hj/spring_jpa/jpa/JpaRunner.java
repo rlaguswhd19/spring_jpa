@@ -17,7 +17,7 @@ public class JpaRunner implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        postRepository.findAll().forEach(System.out::println);
+    public void run(ApplicationArguments args) {
+//        postRepository.findAll().forEach(System.out::println);
     }
 }
