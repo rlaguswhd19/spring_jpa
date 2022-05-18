@@ -42,5 +42,4 @@ public class PostController {
         Post newPost = postRepository.save(post);
         return EntityModel.of(newPost);
     }
-
 }

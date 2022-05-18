@@ -42,23 +42,32 @@ public class PostControllerTest {
 
     @Test
     public void getPosts() throws Exception {
-        Post post = Post.builder()
-                .title("jpa")
-                .build();
-
-        postRepository.save(post);
+        createPost();
 
         mockMvc.perform(get("/posts")
                         .param("page","0")
                         .param("size", "10")
-                        .param("sort", "created,desc")
-                        .param("sort", "id")
+                        .param("sort", "title,desc")
+//                        .param("sort", "title")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("page.size").exists())
                 .andExpect(jsonPath("page.size").value("10"))
-                .andExpect(jsonPath("_embedded.postList[0].id").value(1))
                 .andDo(print())
         ;
+    }
+
+    public void createPost() {
+        int postCount = 100;
+
+        while(postCount > 0) {
+            Post post = Post.builder()
+                    .title("test" + postCount)
+                    .build();
+
+            postRepository.save(post);
+
+            postCount--;
+        }
     }
 }
