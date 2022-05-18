@@ -17,7 +17,7 @@ import java.util.Set;
 public class Post {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private Long id;
 
     private String title;

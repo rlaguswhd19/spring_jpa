@@ -4,6 +4,7 @@ import com.hj.spring_jpa.jpa.cascade.Post;
 import com.hj.spring_jpa.jpa.cascade.QPost;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
 import com.querydsl.core.types.Predicate;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -74,5 +75,18 @@ public class PostRepositoryTest {
 
         pages.stream().forEach(System.out::println);
 
+    }
+
+    @Test
+    @Disabled
+    public void createPost() {
+        Post post = Post.builder()
+                .title("test")
+                .build();
+
+        postRepository.save(post);
+
+        List<Post> posts = postRepository.findAll();
+        assertThat(posts.size()).isEqualTo(1);
     }
 }
