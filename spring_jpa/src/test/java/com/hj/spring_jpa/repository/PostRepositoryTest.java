@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.EntityManager;
@@ -142,7 +143,7 @@ public class PostRepositoryTest {
     }
 
     @Test
-    public void Query() {
+    public void query() {
         Post post = new Post();
         post.setTitle("namedQueryTest");
 
@@ -154,5 +155,10 @@ public class PostRepositoryTest {
         List<Post> byTitle = postRepository.makeTest();
         assertThat(byTitle.size()).isEqualTo(1);
 
+    }
+
+    @Test
+    public void sort() {
+        List<Post> posts = postRepository.sortTest("title", JpaSort.unsafe(Sort.Direction.DESC, "LENGTH(title)"));
     }
 }
