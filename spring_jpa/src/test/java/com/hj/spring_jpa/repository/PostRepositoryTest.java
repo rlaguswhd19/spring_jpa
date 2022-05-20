@@ -4,13 +4,11 @@ import com.hj.spring_jpa.jpa.cascade.Post;
 import com.hj.spring_jpa.jpa.cascade.QPost;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
 import com.querydsl.core.types.Predicate;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.test.annotation.Rollback;
@@ -18,8 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -160,5 +158,31 @@ public class PostRepositoryTest {
     @Test
     public void sort() {
         List<Post> posts = postRepository.sortTest("title", JpaSort.unsafe(Sort.Direction.DESC, "LENGTH(title)"));
+    }
+
+    @Test
+    public void updateTest() {
+        Post post = savePost();
+        int updated = postRepository.updateTitle("hibernate", post.getId());
+
+        assertThat(updated).isEqualTo(1);
+
+        Optional<Post> byId = postRepository.findById(post.getId());
+        assertThat(byId.get().getTitle()).isEqualTo("hibernate");
+    }
+
+    @Test
+    public void updateTest2() {
+        Post post = savePost();
+        post.setTitle("hibernate");
+
+        List<Post> all = postRepository.findAll();
+        assertThat(all.get(0).getTitle()).isEqualTo("hibernate");
+    }
+    public Post savePost() {
+        return postRepository.save(Post.builder()
+                .title("test")
+                .build()
+        );
     }
 }
