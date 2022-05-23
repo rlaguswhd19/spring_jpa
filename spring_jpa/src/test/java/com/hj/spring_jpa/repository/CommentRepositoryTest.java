@@ -1,8 +1,12 @@
 package com.hj.spring_jpa.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Comment;
+import com.hj.spring_jpa.jpa.cascade.Post;
 import com.hj.spring_jpa.jpa.cascade.repository.CommentRepository;
+import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
@@ -20,10 +24,41 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CommentRepositoryTest {
 
     @Autowired
-    CommentRepository commentRepository;
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+
+    @BeforeAll
+    public void setup() {
+
+        Post post = Post.builder()
+                .title("jpa")
+                .build();
+        Post save = postRepository.save(post);
+
+        Comment comment = Comment.builder()
+                .comment("test")
+                .post(save)
+                .build();
+
+        commentRepository.save(comment);
+    }
+    @Test
+    public void getComment() {
+
+        Comment byId = commentRepository.getById(2l);
+
+//        System.out.println("=========================");
+
+//        commentRepository.findById(1l);
+
+    }
 
     @Test
     public void crud() {

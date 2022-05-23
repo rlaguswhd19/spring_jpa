@@ -3,12 +3,8 @@ package com.hj.spring_jpa.jpa.cascade;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -16,6 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 @Setter
+@NamedEntityGraph(name = "Comment.post",
+        attributeNodes = @NamedAttributeNode("post"))
 public class Comment {
 
     @Id
@@ -24,12 +22,14 @@ public class Comment {
 
     private String comment;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
     @NotNull
+    @Builder.Default
     private Integer likeCount = 0;
 
+    @Builder.Default
     private LocalDate created = LocalDate.now();
 
     @Override

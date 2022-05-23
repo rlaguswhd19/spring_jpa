@@ -4,6 +4,7 @@ import com.hj.spring_jpa.jpa.cascade.Comment;
 import com.hj.spring_jpa.jpa.cascade.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+
+    @EntityGraph(value = "Comment.post")
+    Comment getById(Long id);
 
     List<Comment> findByCommentContainsIgnoreCaseAndLikeCountGreaterThanOrderByLikeCountDesc(String keyword, int likeCount);
 
