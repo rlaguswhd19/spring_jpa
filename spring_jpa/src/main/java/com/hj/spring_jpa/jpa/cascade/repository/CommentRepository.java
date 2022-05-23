@@ -11,12 +11,13 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @EntityGraph(value = "Comment.post")
-    Comment getById(Long id);
+    Optional<Comment> findById(Long id);
 
     List<Comment> findByCommentContainsIgnoreCaseAndLikeCountGreaterThanOrderByLikeCountDesc(String keyword, int likeCount);
 

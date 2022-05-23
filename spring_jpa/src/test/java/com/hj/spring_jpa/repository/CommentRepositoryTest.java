@@ -52,11 +52,11 @@ public class CommentRepositoryTest {
     @Test
     public void getComment() {
 
-        Comment byId = commentRepository.getById(2l);
+        commentRepository.findById(2l);
 
-//        System.out.println("=========================");
+        System.out.println("=========================");
 
-//        commentRepository.findById(1l);
+        commentRepository.findAll();
 
     }
 
