@@ -2,6 +2,7 @@ package com.hj.spring_jpa.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Comment;
 import com.hj.spring_jpa.jpa.cascade.Post;
+import com.hj.spring_jpa.jpa.cascade.impl.CommentSummary;
 import com.hj.spring_jpa.jpa.cascade.repository.CommentRepository;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,6 +50,27 @@ public class CommentRepositoryTest {
 
         commentRepository.save(comment);
     }
+    @Test
+    public void projection() {
+
+        Post post = Post.builder()
+                .title("jpa")
+                .build();
+
+        Post savePost = postRepository.save(post);
+
+        Comment comment = Comment.builder()
+                .post(savePost)
+                .up(10)
+                .down(5)
+                .build();
+
+        Comment saveComment = commentRepository.save(comment);
+
+        List<CommentSummary> byPost_id = commentRepository.findByPost_id(saveComment.getId());
+//        byPost_id.forEach();
+    }
+
     @Test
     public void getComment() {
 

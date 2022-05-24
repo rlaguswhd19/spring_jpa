@@ -22,15 +22,21 @@ public class QComment extends EntityPathBase<Comment> {
 
     public static final QComment comment1 = new QComment("comment1");
 
+    public final BooleanPath best = createBoolean("best");
+
     public final StringPath comment = createString("comment");
 
     public final DatePath<java.time.LocalDate> created = createDate("created", java.time.LocalDate.class);
+
+    public final NumberPath<Integer> down = createNumber("down", Integer.class);
 
     public final NumberPath<Long> Id = createNumber("Id", Long.class);
 
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     public final QPost post;
+
+    public final NumberPath<Integer> up = createNumber("up", Integer.class);
 
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);

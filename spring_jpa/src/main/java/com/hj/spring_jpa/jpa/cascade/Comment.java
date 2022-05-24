@@ -29,6 +29,10 @@ public class Comment {
     @Builder.Default
     private Integer likeCount = 0;
 
+    private int up;
+    private int down;
+    private boolean best;
+
     @Builder.Default
     private LocalDate created = LocalDate.now();
 
