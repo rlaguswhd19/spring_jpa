@@ -2,6 +2,7 @@ package com.hj.spring_jpa.jpa.cascade.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Comment;
 import com.hj.spring_jpa.jpa.cascade.Post;
+import com.hj.spring_jpa.jpa.cascade.impl.CommentOnly;
 import com.hj.spring_jpa.jpa.cascade.impl.CommentSummary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,5 +33,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findByLikeCountGreaterThanAndPost_IdOrderByCreatedDesc(int likeCount, Long postId, Pageable pageable);
     Page<Comment> findByLikeCountGreaterThanAndPost(int likeCount, Post post, Pageable pageable);
 
+    <T> List<T> findByPost_id(Long Id, Class<T> type);
     List<CommentSummary> findByPost_id(Long Id);
 }

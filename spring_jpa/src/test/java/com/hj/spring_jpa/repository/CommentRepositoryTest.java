@@ -2,6 +2,7 @@ package com.hj.spring_jpa.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Comment;
 import com.hj.spring_jpa.jpa.cascade.Post;
+import com.hj.spring_jpa.jpa.cascade.impl.CommentOnly;
 import com.hj.spring_jpa.jpa.cascade.impl.CommentSummary;
 import com.hj.spring_jpa.jpa.cascade.repository.CommentRepository;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
@@ -60,14 +61,23 @@ public class CommentRepositoryTest {
         Post savePost = postRepository.save(post);
 
         Comment comment = Comment.builder()
+                .comment("comment test")
                 .post(savePost)
                 .up(10)
-                .down(5)
+                .down(1)
                 .build();
 
         Comment saveComment = commentRepository.save(comment);
 
-        List<CommentSummary> byPost_id = commentRepository.findByPost_id(saveComment.getId());
+//        commentRepository.findByPost_id(savePost.getId(), CommentSummary.class).forEach(c ->{
+//            System.out.println(c.getVotes());
+//        });
+
+        commentRepository.findByPost_id(savePost.getId()).forEach(c -> System.out.println(c.getVotes()));
+
+//        commentRepository.findByPost_id(savePost.getId(), CommentOnly.class).forEach(c ->{
+//            System.out.println(c.getComment());
+//        });
 //        byPost_id.forEach();
     }
 
