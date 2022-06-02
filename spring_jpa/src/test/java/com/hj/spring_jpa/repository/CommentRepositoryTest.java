@@ -2,8 +2,6 @@ package com.hj.spring_jpa.repository;
 
 import com.hj.spring_jpa.jpa.cascade.Comment;
 import com.hj.spring_jpa.jpa.cascade.Post;
-import com.hj.spring_jpa.jpa.cascade.impl.CommentOnly;
-import com.hj.spring_jpa.jpa.cascade.impl.CommentSummary;
 import com.hj.spring_jpa.jpa.cascade.repository.CommentRepository;
 import com.hj.spring_jpa.jpa.cascade.repository.PostRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
@@ -51,6 +47,7 @@ public class CommentRepositoryTest {
 
         commentRepository.save(comment);
     }
+
     @Test
     public void projection() {
 
@@ -161,6 +158,20 @@ public class CommentRepositoryTest {
             }
         });
 
+    }
+
+    @Test
+    public void qbe() {
+        Comment probe = Comment.builder()
+                .best(true)
+                .build();
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAny()
+                .withIgnorePaths("up", "down", "likeCount", "created");
+
+        Example<Comment> example = Example.of(probe, exampleMatcher);
+
+        commentRepository.findAll(example);
     }
 
     public void createComment(int likeCount, String comment) {

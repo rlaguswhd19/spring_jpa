@@ -5,16 +5,12 @@ import com.hj.spring_jpa.jpa.custom.CustomPostPublishedEvent;
 import com.hj.spring_jpa.jpa.custom.CustomPostRepository;
 import com.hj.spring_jpa.jpa.custom.QCustomPost;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import org.assertj.core.api.PredicateAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
