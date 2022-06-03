@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long>, QueryBy
     Page<Comment> findByLikeCountGreaterThanAndPost_IdOrderByCreatedDesc(int likeCount, Long postId, Pageable pageable);
     Page<Comment> findByLikeCountGreaterThanAndPost(int likeCount, Post post, Pageable pageable);
 
+    @Transactional(readOnly = true)
     <T> List<T> findByPost_id(Long Id, Class<T> type);
     List<CommentSummary> findByPost_id(Long Id);
 }
