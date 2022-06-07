@@ -26,6 +26,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final StringPath comment = createString("comment");
 
+    public final QCommentAccount createBy;
+
     public final DatePath<java.time.LocalDate> created = createDate("created", java.time.LocalDate.class);
 
     public final NumberPath<Integer> down = createNumber("down", Integer.class);
@@ -37,6 +39,10 @@ public class QComment extends EntityPathBase<Comment> {
     public final QPost post;
 
     public final NumberPath<Integer> up = createNumber("up", Integer.class);
+
+    public final QCommentAccount updateBy;
+
+    public final DatePath<java.time.LocalDate> updated = createDate("updated", java.time.LocalDate.class);
 
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);
@@ -56,7 +62,9 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.createBy = inits.isInitialized("createBy") ? new QCommentAccount(forProperty("createBy")) : null;
         this.post = inits.isInitialized("post") ? new QPost(forProperty("post")) : null;
+        this.updateBy = inits.isInitialized("updateBy") ? new QCommentAccount(forProperty("updateBy")) : null;
     }
 
 }

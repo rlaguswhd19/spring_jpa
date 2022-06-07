@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
@@ -21,7 +24,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
+@SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CommentRepositoryTest {
 
@@ -90,22 +93,28 @@ public class CommentRepositoryTest {
     }
 
     @Test
+    @Transactional
     public void crud() {
 
         Comment comment = new Comment();
         comment.setComment("test comment");
 
-        commentRepository.save(comment);
+        Comment save = commentRepository.save(comment);
 
+        System.out.println(save);
         List<Comment> comments = commentRepository.findAll();
-        assertThat(comments.size()).isEqualTo(1);
-        assertThat(comments).isNotEmpty();
 
-        long count = commentRepository.count();
-        assertThat(count).isEqualTo(1);
-
-        Optional<Comment> byId = commentRepository.findById(100L);
-        assertThat(byId).isEmpty();
+        comments.stream().forEach(c -> {
+            System.out.println(c);
+        });
+//        assertThat(comments.size()).isEqualTo(1);
+//        assertThat(comments).isNotEmpty();
+//
+//        long count = commentRepository.count();
+//        assertThat(count).isEqualTo(1);
+//
+//        Optional<Comment> byId = commentRepository.findById(100L);
+//        assertThat(byId).isEmpty();
 //        byId.orElseThrow(IllegalArgumentException::new);
 
 //        commentRepository.save(null);

@@ -34,10 +34,4 @@ public class Post {
         comment.setPost(this);
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "title='" + title + '\'' +
-                '}';
-    }
 }
